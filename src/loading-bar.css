@@ -1,0 +1,30 @@
+#loading-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#loading-bar-container {
+	width: 70%;
+	height: 5px;
+	max-width: 600px;
+	margin: auto;
+	position: relative;
+}
+
+#loading-bar-loader {
+	background: #EEEEEE;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 0%;
+	transition: all 0.2s ease-in-out;
+}

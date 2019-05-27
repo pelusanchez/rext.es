@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script languaje="javascript" src="rgb2hsv.js"></script>
+		<script languaje="javascript" src="system_solver.js"></script>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+			html, body {
+				padding: 0;
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				font-family: Arial, sans-serif;
+				font-size: 16px;
+			}
+			#canvas {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background: #444;
+				font-size: 24px;
+			}
+			#image_main {
+				background-color: #000;
+			}
+
+			#menu {
+				position: fixed;
+				left: 0px;
+				bottom: 0px;
+				right: 0;
+				border-right: 1px solid #000;
+				background-color: #222222;
+				color:#FFF;
+				
+				padding: 0 5px;
+
+				white-space: nowrap;
+    		overflow-y: hidden;
+    		overflow:scroll;
+			}
+
+			.menu_item {
+				display: inline-block;
+				text-align: center;
+				border-right: 1px solid #777;
+				padding: 5px;
+				min-width: 80px;
+			}
+
+			.menu_item > img {
+				width: 24px;
+				height: 24px;
+			}
+
+			.menu_item > .text {
+				font-size: 0.8rem;
+			}
+
+
+			.menu_item > input {
+				margin: 10px auto;
+				display: none;
+			}
+
+			input[type="range"] {
+				display: block;
+			}
+
+			/* SLIDER */
+
+			.slider {
+			  -webkit-appearance: none;
+			  width: 90%;
+			  height: 2px;
+			  background: #FFF;
+			  outline: none;
+			  opacity: 0.7;
+			  -webkit-transition: .2s;
+			  transition: opacity .2s;
+			  border-radius: 5px;
+			  margin: 0 auto;
+			}
+
+			.slider:hover {
+			  opacity: 1;
+			}
+
+			.slider::-webkit-slider-thumb {
+			  -webkit-appearance: none;
+			  appearance: none;
+			  width: 20px;
+			  height: 20px;
+			  border-radius: 50%;
+			  background: #FFF;
+			  cursor: pointer;
+			}
+
+			.slider::-moz-range-thumb {
+			  width: 20px;
+			  height: 20px;
+			  border-radius: 50%;
+			  background: #C0C0C0;
+			  cursor: pointer;
+			}
+
+			/* END SLIDERS */
+
+			input[type="file"] {
+				display: none;
+			}
+
+			#image_main {
+				max-width: 80%;
+				max-height: 80%;
+				transition: opacity 0.2s ease-in-out;
+			}
+
+			#image_main.loading {
+				opacity: 0.5;
+			}
+
+			/* BUTTON STYLING */
+		.button {			
+	    font-size: 1.2rem;
+	    border-radius: 2px;
+	    border: 0;
+	    padding: 5px 10px;
+	    text-align: center;
+	    color: #FFF;
+	    display: inline;
+	    margin: 0 auto;
+	    cursor: pointer;
+	  }
+
+	  .main {
+	  	background: #73abff;
+	  }
+
+	  .warning {
+	  	background: #ff7973;
+	  }
+
+	  /* ADJUST MENU */
+	  .adjust_menu {
+	  	position: fixed;
+	    bottom: -100px;
+	    left: 0;
+	    right: 0;
+	    background: rgba(20, 20, 20, 0.7);
+	    display: none;
+	    transition: all 0.2s ease-in-out;
+	  	max-height: 200px;
+	  	overflow-x: scroll;
+
+	  }
+
+	  .adjust_item {
+	  	padding: 10px;
+	  	margin: 10px;
+	  }
+
+	  .adjust_item > .text {
+	  	color: #FFFFFF;
+	  	text-align: center;
+	  	margin: 5px auto;
+	  	font-size: 1rem;
+	  	padding-bottom: 10px;
+	  }
+		</style>
+		<script languaje="javascript">
+			var current_adjust = null;
+			
+			/**
+			 * showAdjust
+			 * Show adjust slider
+			 *
+			 */
+			function showAdjust(model) {
+				if (current_adjust == model) {
+					var back_adjust = document.getElementById("adjust_" + current_adjust);
+					
+					back_adjust.style.bottom = "-100px";
+					setTimeout(function() {
+						back_adjust.style.display = "none";
+					}, 200);
+					current_adjust = null;
+					return;
+
+				}
+				if (current_adjust !== null) {
+					// Close previous adjust
+					var back_adjust = document.getElementById("adjust_" + current_adjust);
+					
+					back_adjust.style.bottom = "-100px";
+					setTimeout(function() {
+						back_adjust.style.display = "none";
+					}, 200);
+				}
+				current_adjust = model;
+				var adjust_element = document.getElementById("adjust_" + model);
+
+				adjust_element.style.display = "block";
+				setTimeout(function() {
+					adjust_element.style.bottom = document.getElementById("menu").clientHeight + "px";
+				}, 0)
+			}
+
+			window.onerror = function(errorMessage, errorUrl, errorLine) {
+				alert("Error: " + errorMessage + " en la url: " + errorUrl + ", en la Línea:" + errorLine);
+			};
+
+			window.addEventListener("load", function(event) {
+		    var adjust = document.getElementsByClassName("menu_item");
+		    var i = adjust.length;
+		    while (i--) {
+		    	adjust[i].addEventListener("click", function(event) {
+		    		if (this.getAttribute("data")) {
+		    			showAdjust(this.getAttribute("data"));
+		    		}
+		    		if (this.getAttribute("data-action")) {
+		    			window.Actions[this.getAttribute("data-action")]();
+		    		}
+		    		event.stopPropagation();
+		    		return;
+		    	});
+		    }
+		    document.body.addEventListener("click", function(event) {
+		    	if (event.target.getAttribute("id") !== "canvas") {
+		    		return;
+		    	}
+		    	if (current_adjust !== null) {
+		    		showAdjust(current_adjust);
+		    		return;
+		    	}
+		    })
+		  });
+		</script>
+		<script languaje="javascript" src="editor.js"></script>
+	</head>
+	<body>
+
+<div class="adjust_menu" id="adjust_exposure">
+	<div class="adjust_item">
+		<div class="text">Exposición</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="exposure">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_brightness">
+	<div class="adjust_item">
+		<div class="text">Brillo</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="brightness" data-callback="generateLightning">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_contrast">
+	<div class="adjust_item">
+		<div class="text">Contraste</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="contrast" data-callback="generateLightning">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_saturation">
+	<div class="adjust_item">
+		<div class="text">Saturación</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="saturation">
+	</div>
+	<div class="adjust_item">
+		<div class="text">Vibrancia</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="vibrance">
+	</div>
+	<div class="adjust_item">
+		<div class="text">Blanco y negro</div>
+		<input type="range" step="0.01" min="0" max="1" value="0" class="slider" data="bAndW">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_temperature">
+	<div class="adjust_item">
+		<div class="text">Temperatura</div>
+		<input type="range" step="0.01" min="2000" max="40000" value="6500" class="slider" data="temperature" data-callback="updateTemptint">
+	</div>
+	<div class="adjust_item">
+		<div class="text">Matiz</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="tint" data-callback="updateTemptint">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_radiance">
+	<div class="adjust_item">
+		<div class="text">Radiancia</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="radiance" data-callback="generateLightning,kernel_update">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_dehaze">
+	<div class="adjust_item">
+		<div class="text">Niebla</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="dehaze">
+	</div>
+	<div class="adjust_item">
+		<div class="text">Luz atmosférica</div>
+		<input type="range" step="0.01" min="0" max="1" value="0.7" class="slider" data="atmosferic_light">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_details">
+	<div class="adjust_item">
+		<div class="text">Detalle</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="sharpen" data-callback="kernel_update">
+	</div>
+	<div class="adjust_item">
+		<div class="text">Radio</div>
+		<input type="range" step="0.01" min="0.1" max="2" value="1" class="slider" data="sharpen_radius" data-callback="kernel_update">
+	</div>
+	<div class="adjust_item">
+		<div class="text">Máscara</div>
+		<input type="range" step="0.01" min="0" max="1" value="0.5" class="slider" data="masking">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_lights">
+	<div class="adjust_item">
+		<div class="text">Blancos</div>
+		<input type="range" step="0.01" min="-0.3" max="0.3" value="0" class="slider" data="whites" data-callback="generateLightning">
+	</div>
+
+	<div class="adjust_item">
+		<div class="text">Luces</div>
+		<input type="range" step="0.01" min="-0.3" max="0.3" value="0" class="slider" data="highlights" data-callback="generateLightning">
+	</div>
+
+	<div class="adjust_item">
+		<div class="text">Sombras</div>
+		<input type="range" step="0.01" min="-0.3" max="0.3" value="0" class="slider" data="shadows" data-callback="generateLightning">
+	</div>
+
+	<div class="adjust_item">
+		<div class="text">Negros</div>
+		<input type="range" step="0.01" min="-0.3" max="0.3" value="0" class="slider" data="blacks" data-callback="generateLightning">
+	</div>
+</div>
+
+<div class="adjust_menu" id="adjust_hdr">
+	<div class="adjust_item">
+		<div class="text">Cantidad</div>
+		<input type="range" step="0.01" min="-1" max="1" value="0" class="slider" data="hdr">
+	</div>
+
+</div>
+
+		<div id="menu">
+
+			<div class="menu_item" data="exposure">
+				<img src="icons/iso.svg?data=1"></img>
+				<div class="text">Exposición</div>	
+			</div>
+<!--
+			<div class="menu_item" data="brightness">
+				<img src="icons/iso.svg?data=1"></img>
+				<div class="text">Brillo</div>	
+			</div>-->
+
+			<div class="menu_item" data="contrast">
+				<img src="icons/contrast.svg?data=1"></img>
+				<div class="text">Contraste</div>
+			</div>
+
+			<div class="menu_item" data="lights">
+				<img src="icons/tune.svg?data=1"></img>
+				<div class="text">Luces</div>
+			</div>
+
+			<div class="menu_item" data="temperature">
+				<img src="icons/temperature.svg?data=1"></img>
+				<div class="text">Temperatura</div>
+			</div>
+
+			<div class="menu_item" data="saturation">
+				<img src="icons/color.svg?data=2"></img>
+				<div class="text">Color</div>
+			</div>
+
+			<div class="menu_item" data="details">
+				<img src="icons/blur.svg?data=1"></img>
+				<div class="text">Detalles</div>
+			</div>
+
+			<div class="menu_item" data="radiance">
+				<img src="icons/texture.svg?data=1"></img>
+				<div class="text">Radiancia</div>
+			</div>
+
+			<div class="menu_item" data="dehaze">
+				<img src="icons/dehaze.svg?data=1"></img>
+				<div class="text">Niebla</div>
+			</div>
+			
+			<div class="menu_item" data="hdr">
+				<img src="icons/hdr.svg?data=1"></img>
+				<div class="text">HDR</div>
+			</div>
+
+			<div class="menu_item" data-action="reset">
+				<img src="icons/reset.svg?d=1"></img>
+				<div class="text">Reiniciar</div>
+			</div>
+
+			<div class="menu_item" data-action="download">
+				<img src="icons/download.svg?d=1"></img>
+				<div class="text">Guardar</div>
+			</div>
+			
+		</div>
+		<div id="canvas">
+			<canvas id="image_main" width="400" height="400"></canvas>
+			<canvas id="process_image" style="display: none" width="400" height="400"></canvas>
+		</div>
+		<input type="file" id="image_data" accept="image/*">
+	</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="es"><head><title>REXT | Versión de escritorio</title><link rel="manifest" href="/manifest-1.json"><meta charset="utf-8"><meta rel="canonical"><meta name="application-name" content="REXT image editor"><meta name="description" content="REXT es un editor de imágenes en línea. Edite sus imágenes en cualquier lugar, en cualquier dispositivo. Versión de escritorio."><meta name="keywords" content="editor, imágenes, image, editor, online, fotografía, fotos, web, editor, aplicacion, application, app, photo, effects, enhance, edit, editor, ajustar, adjust, online photo editor, editor de fotos online, fotógrafo, rext, rext image editor, editor de imagenes rext"><meta name="author" content="David Iglesias"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta theme-color="#444444"><script languaje="javascript" src="desktop.build.js?delta=1"></script><link rel="stylesheet" href="desktop.style.css"><style>.box-buttons {
+				padding: 0;
+				margin: 0;
+				font-size: 0.8rem;
+			}
+
+			.box-button {
+				cursor: pointer;
+				width: 33%;
+				height: 80px;
+				border-right: 1px solid #444;
+				border-bottom: 1px solid #444;
+				text-align: center;
+				color: #CCC;
+				display: inline-block;
+			}
+
+			.box-button:last-child {
+				border-right: 0;
+			}
+
+			.box-button:hover {
+				background: #111;
+			}
+
+			.box-button > span {
+				margin: 9px;
+				font-size: 14px;
+			}
+
+			.box-button-image {
+				width: 28px;
+				height: 28px;
+				margin: 14px auto;
+				margin-bottom: 4px;
+			}
+
+			.box-button-image > svg {
+				width: 100%;
+				height: 100%;
+			}</style></head><body><div id="menu" class="menu"><div class="box-buttons"><div id="image-open" class="box-button"><div class="box-button-image"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="white"/><path d="M0 0h24v24H0z" fill="none"/></svg></div><span>Abrir</span></div><div class="box-button data-action" data-action="reset"><div class="box-button-image"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="white" d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></div><span>Reiniciar</span></div><div id="image-save" class="box-button"><div class="box-button-image"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="white" d="M16 13h-3V3h-2v10H8l4 4 4-4zM4 19v2h16v-2H4z"/></svg></div><span>Guardar</span></div></div><div class="menu-container open"><div class="menu-container-title"><div class="text">Tonos</div><div class="expand-submenu-icon">+</div></div><div class="menu_item"><div class="text left">Exposición</div><input type="range" class="range" min="-0.8" max="0.8" value="0" step="0.01" data-item="exposure"></div><div class="menu_item"><div class="text">Brillo</div><input type="range" class="range" min="-0.9" max="0.9" value="0" step="0.01" data-item="brightness"></div><div class="menu_item"><div class="text">Contraste</div><input type="range" class="range" value="0" step="0.01" min="-0.8" max="0.8" data-item="contrast" data-callback="generateLightning"></div><div class="menu_item"><div class="text">Claros</div><input type="range" class="range" value="0" step="0.01" data-item="whites" min="-0.3" max="0.3" data-callback="generateLightning"></div><div class="menu_item"><div class="text">Luces</div><input type="range" class="range" value="0" step="0.01" data-item="highlights" min="-0.3" max="0.3" data-callback="generateLightning"></div><div class="menu_item"><div class="text">Sombras</div><input type="range" class="range" value="0" step="0.01" data-item="shadows" min="-0.3" max="0.3" data-callback="generateLightning"></div><div class="menu_item"><div class="text">Oscuros</div><input type="range" class="range" value="0" step="0.01" data-item="blacks" min="-0.3" max="0.3" data-callback="generateLightning"></div><div class="menu_item"><div class="text">Radiancia</div><input type="range" class="range" value="0" step="0.01" data-item="radiance" min="-1" max="1" data-callback="generateLightning,kernel_update"></div><div class="menu_item"><div class="text">HDR</div><input type="range" class="range" value="0" step="0.01" data-item="hdr" min="-1" max="1" data-callback="kernel_update"></div></div><div class="menu-container"><div class="menu-container-title"><div class="text">Color</div><div class="expand-submenu-icon">+</div></div><div class="menu_item"><div class="text">Temperatura</div><input type="range" class="range temp" value="0" step="0.01" data-item="temperature" min="-1" max="1" data-callback="updateTemptint"></div><div class="menu_item"><div class="text">Matíz</div><input type="range" class="range tint" value="0" step="0.01" data-item="tint" min="-1" max="1" data-callback="updateTemptint"></div><div class="menu_item"><div class="text">Saturación</div><input type="range" class="range sat" value="0" step="0.01" data-item="saturation" min="-1" max="1"></div><div class="menu_item"><div class="text">Blanco y Negro</div><input type="range" class="range baw" value="0" step="0.01" data-item="bAndW" min="-1" max="1"></div><div class="splitter"></div><div class="menu_item"><div class="text">Colorear luces</div><input type="range" class="range amount" value="0" step="0.01" data-item="lightFill" min="0" max="0.8"> <input type="range" class="range hsl" value="0" step="0.01" data-item="lightColor" min="0" max="1"> <input type="range" class="range sat" value="1" step="0.01" data-item="lightSat" min="0" max="1"></div><div class="menu_item"><div class="text">Colorear sombras</div><input type="range" class="range amount" value="0" step="0.01" data-item="darkFill" min="0" max="0.8"> <input type="range" class="range hsl" value="0" step="0.01" data-item="darkColor" min="0" max="1"> <input type="range" class="range sat" value="1" step="0.01" data-item="darkSat" min="0" max="1"></div></div><div class="menu-container"><div class="menu-container-title"><div class="text">Detalles</div><div class="expand-submenu-icon">+</div></div><div class="menu_item"><div class="text">Nivel</div><input type="range" class="range" value="0" step="0.01" data-item="sharpen" min="-1" max="1" data-callback="kernel_update"></div><div class="menu_item"><div class="text">Radio</div><input type="range" class="range" value="0" step="0.01" data-item="sharpen_radius" min="0.1" max="2" data-callback="kernel_update"></div><div class="menu_item"><div class="text">Máscara</div><input type="range" class="range" value="0" step="0.01" data-item="masking" min="0" max="1"></div><div class="menu_item"><div class="text">Quitar niebla</div><input type="range" class="range" value="0" step="0.01" data-item="dehaze" min="-0.9" max="0.9"></div><div class="menu_item"><div class="text">Luz atmosférica</div><input type="range" class="range" value="0" step="0.01" data-item="atmosferic_light" min="0" max="1"></div></div></div><div id="canvas"><div id="canvas_info" style="color: #FFFFFF;">Para comenzar, abra una imagen</div><canvas id="image_main" style="display: none;" width="400" height="400"></canvas></div><input type="file" id="image_data" accept="image/*"></body></html>

@@ -1,0 +1,75 @@
+<html>
+<script>
+function getLuma(rgb_pix) {
+  return 0.2126 * rgb_pix.r + 0.7152 * rgb_pix.g + 0.0722 * rgb_pix.b;
+}
+function updateTemptint(T) { // Temperature in kelvin
+  
+  // T from -1 to 0 is 2000 to 6500
+  if (T < 0) {
+    T = (T + 1) * 4500 + 2000;
+  } else {
+  // T from 0 to 1 is 6500 to 40000
+    T = 6500 + 33500 * T;
+  }
+
+  var TT = [];
+  TT[0] = T;
+  TT[1] = T * TT[0]; 
+  TT[2] = T * TT[1];
+  TT[3] = T * TT[2];
+  TT[4] = T * TT[3];
+  TT[5] = T * TT[4];
+  var R, G, B;  
+
+  if (T < 6500) {
+    // RED CHANNEL
+    if (T < 4500) {
+      R = 3.33982e-14 * TT[3] - 4.95485e-10 * TT[2] + 2.563e-6 * TT[1] - 0.00508742 * TT[0] +  3.44637;
+    } else {
+      R = 1;
+    }
+
+    // GREEN
+    G = -4.08841e-18 * TT[4] + 9.7285e-14 * TT[3] - 8.88518e-10 * TT[2] + 3.81164e-6 * TT[1] - 0.00728263 * TT[0] + 5.0591;
+
+
+    B = Math.exp(- 11.0382 / Math.pow((T + 50185.5) / 51695.1, 70) - 0.427351 ) + 2.91675e-12 * TT[2] - 3.48326e-08 * TT[1] + 0.000203355 * TT[0] - 0.291236;
+    G /= R;
+    B /= R;
+    R = 1;
+
+  } else { // T > 6500
+
+    R = 17322.1 / Math.pow(T - 1470.73, 1.23675) + 0.543991;
+    G = 12410.1 / Math.pow(T - 1006.79, 1.23965) + 0.69136;
+    B = 1;
+  }
+
+  //G += params.tint;
+
+  // Luma correction
+  //var curr_luma = getLuma({r: R, g: G, b: B});
+  //var mult_K = 1 / curr_luma;
+
+  return [R, G, B];
+  
+}
+
+function genTable() {
+  var html = "";
+  var i = 0;
+  while(i <= 100) {
+    var j = parseInt((-1 + i / 100) * 100) / 100;
+    
+    var ttint = updateTemptint(j);
+    html +="["+ ttint[1] + ", " +  ttint[2] + "],";
+    i ++;
+  }
+  document.body.innerHTML = html;
+}
+</script>
+<body>
+
+</body>
+</html>

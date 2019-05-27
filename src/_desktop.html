@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<script languaje="javascript" src="../js/rgb2hsv.js"></script>
+		<script languaje="javascript" src="../js/system_solver_refactored.js"></script>
+		<script languaje="javascript" src="../js/popup.js"></script>
+		<script languaje="javascript" src="../js/editor.js"></script>
+		<script languaje="javascript" src="desktop.js"></script>
+
+		<link rel="stylesheet" href="../normalize.css" />
+		<link rel="stylesheet" href="desktop.css" />
+	</head>
+	<body>
+		<div id="overlay">
+			<div id="popup">
+				<div id="popup-container">
+					<div id="popup-header">
+						HEADER
+					</div>
+					<div id="popup-body">
+						BODY
+					</div>
+					<div id="popup-bottom">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menu" class="menu">
+			<div class="container">
+				<div id="image-open" class="button left">Abrir</div>
+				<div id="image-save" class="button right">Guardar</div>
+			</div>
+			<br>
+
+			<div class="menu-container open">
+				<div class="menu-container-title">
+					<div class="text">Tonos</div>
+					<div class="expand-submenu-icon">+</div>
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Exposición</div>
+					<input type="range" class="range" min="-1" max="1" value="0" step="0.01" data-item="exposure">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Brillo</div>
+					<input type="range" class="range" min="-1" max="1" value="0" step="0.01" data-item="brightness">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Contraste</div>
+					<input type="range" class="range" value="0" step="0.01" min="-1" max="1" data-item="contrast" data-callback="generateLightning">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Blancos</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="whites"  min="-0.3" max="0.3" data-callback="generateLightning">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Luces</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="highlights" min="-0.3" max="0.3" data-callback="generateLightning">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Sombras</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="shadows" min="-0.3" max="0.3" data-callback="generateLightning">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Negros</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="blacks" min="-0.3" max="0.3" data-callback="generateLightning">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Radiancia</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="radiance" min="-1" max="1" data-callback="generateLightning,kernel_update">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">HDR</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="hdr" min="-1" max="1" data-callback="kernel_update">
+				</div>
+
+			</div>
+
+			<div class="menu-container">
+				<div class="menu-container-title">
+					<div class="text">Color</div>
+					<div class="expand-submenu-icon">+</div>
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Temperatura</div>
+					<input type="range" class="range temp" value="0" step="0.01" data-item="temperature"  min="-1" max="1" data-callback="updateTemptint">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Matíz</div>
+					<input type="range" class="range tint" value="0" step="0.01" data-item="tint" min="-1" max="1" data-callback="updateTemptint">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Saturación</div>
+					<input type="range" class="range sat" value="0" step="0.01" data-item="saturation"  min="-1" max="1">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Vibrancia</div>
+					<input type="range" class="range sat" value="0" step="0.01" data-item="vibrance" min="-1" max="1">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Blanco y Negro</div>
+					<input type="range" class="range baw" value="0" step="0.01" data-item="bAndW" min="-1" max="1">
+				</div>
+
+				<div class="splitter"></div>
+
+				<div class="menu_item">
+					<div class="text">Colorear luces</div>
+					<input type="range" class="range amount" value="0" step="0.01" data-item="lightFill" min="0" max="1">
+					<input type="range" class="range hsl" value="0" step="0.01" data-item="lightColor" min="0" max="1">
+					<input type="range" class="range sat" value="1" step="0.01" data-item="lightSat" min="0" max="1">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Colorear sombras</div>
+					<input type="range" class="range amount" value="0" step="0.01" data-item="darkFill" min="0" max="1">
+					<input type="range" class="range hsl" value="0" step="0.01" data-item="darkColor" min="0" max="1">
+					<input type="range" class="range sat" value="1" step="0.01" data-item="darkSat" min="0" max="1">
+				</div>
+
+			</div>
+
+			<div class="menu-container">
+				<div class="menu-container-title">
+					<div class="text">Detalles</div>
+					<div class="expand-submenu-icon">+</div>
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Nivel</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="sharpen" min="-1" max="1" data-callback="kernel_update">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Radio</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="sharpen_radius" min="0.1" max="2" data-callback="kernel_update">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Máscara</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="masking" min="0" max="1">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Quitar niebla</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="dehaze" min="-1" max="1">
+				</div>
+
+				<div class="menu_item">
+					<div class="text">Luz atmosférica</div>
+					<input type="range" class="range" value="0" step="0.01" data-item="atmosferic_light" min="0" max="1">
+				</div>
+			</div>
+
+			
+			
+
+			<div class="menu_item" >
+				<div class="text data-action button warning" data-action="reset">Reiniciar</div>
+			</div>
+		</div>
+
+		<!--	<div class="menu_item">
+				<div class="text data-action green" data-action="download">Guardar</div>
+			</div>-->
+			
+		</div>
+		<div id="canvas">
+			<canvas id="image_main" width="400" height="400"></canvas>
+			<canvas id="process_image" style="display: none" width="400" height="400"></canvas>
+		</div>
+		<input type="file" id="image_data" accept="image/*">
+	</body>
+</html>

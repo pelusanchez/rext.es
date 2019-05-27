@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<script languaje="javascript" src="rgb2hsv.js"></script>
+		<script languaje="javascript" src="system_solver.js"></script>
+		<link rel="stylesheet" href="normalize.css" />
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+			html, body {
+				padding: 0;
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				font-family: Arial, sans-serif;
+				font-size: 16px;
+				background: #444;
+				overflow: hidden;
+
+			}
+			#canvas {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+				font-size: 24px;
+			}
+			#image_main {
+				background-color: #000;
+			}
+
+			#menu {
+				bottom: 20px;
+    		height: 22px;
+			}
+
+			.menu {
+				position: fixed;
+				left: 0px;
+				
+				right: 0;
+				border-right: 1px solid #000;
+				color:#FFF;
+				padding: 0 5px;
+				white-space: nowrap;
+    		overflow-y: hidden;
+    		overflow:scroll;
+    		z-index: 5;
+    		transition: all 0.2s ease-in-out;
+			}
+
+			.submenu {
+				display: none;
+				bottom: 50px;
+				transform: translateY(600%);
+			}
+
+			.menu_item {
+				display: inline-block;
+				font-size: 12px;
+				text-align: center;
+				opacity: 0.5;
+				width: 20%;
+				max-width: 20%;
+				text-overflow: ellipsis;
+  			overflow: hidden; 
+  			white-space: nowrap;
+				padding: 5px;
+				transition: all 0.2s ease-in;
+				text-overflow: ellipsis;
+			}
+
+			.menu_item.selected {
+				opacity: 1;
+			}
+
+			.menu_item > img {
+				width: 24px;
+				height: 24px;
+			}
+
+
+
+			.menu_item > input {
+				margin: 10px auto;
+				display: none;
+			}
+
+			input[type="range"] {
+				display: block;
+			}
+
+			/* SLIDER */
+
+			.slider {
+			  -webkit-appearance: none;
+			  width: 90%;
+			  height: 2px;
+			  background: #FFF;
+			  outline: none;
+			  opacity: 0.7;
+			  -webkit-transition: .2s;
+			  transition: opacity .2s;
+			  border-radius: 5px;
+			  margin: 0 auto;
+			}
+
+			.slider:hover {
+			  opacity: 1;
+			}
+
+			.slider::-webkit-slider-thumb {
+			  -webkit-appearance: none;
+			  appearance: none;
+			  width: 20px;
+			  height: 20px;
+			  border-radius: 50%;
+			  background: #FFF;
+			  cursor: pointer;
+			}
+
+			.slider::-moz-range-thumb {
+			  width: 20px;
+			  height: 20px;
+			  border-radius: 50%;
+			  background: #C0C0C0;
+			  cursor: pointer;
+			}
+
+			/* END SLIDERS */
+
+			input[type="file"] {
+				display: none;
+			}
+
+			#image_main {
+				max-width: 100%;
+				max-height: 80%;
+				transition: opacity 0.2s ease-in-out;
+			}
+
+			#image_main.loading {
+				opacity: 0.5;
+			}
+
+	  .main {
+	  	background: #73abff;
+	  }
+
+	  .warning {
+	  	background: #ff7973;
+	  }
+
+	  /* ADJUST MENU */
+	  .adjust_menu {
+	  	position: fixed;
+	    bottom: -100px;
+	    left: 0;
+	    right: 0;
+	    background: rgba(20, 20, 20, 0.7);
+	    display: none;
+	    transition: all 0.2s ease-in-out;
+	  	max-height: 100px;
+	  	overflow-x: scroll;
+
+	  }
+
+	  .adjust_item {
+	  	padding: 10px;
+	  	margin: auto; /*10px;*/
+	  }
+
+	  .adjust_item > .text {
+	  	color: #FFFFFF;
+	  	text-align: center;
+	  	margin: 5px auto;
+	  	font-size: 1rem;
+	  	padding-bottom: 10px;
+	  	text-overflow: ellipsis;
+  		overflow: hidden;
+	  }
+
+	 
+
+	  #overlay {
+	  	position: absolute;
+	  	top: 0;
+	  	left: 0;
+	  	right: 0;
+	  	bottom: 0;
+	  	z-index: 3;
+	  	display: table;
+	  	width: 100%;
+	  	height: 100%;
+	  	
+	  	opacity: 0;
+	  	display: none;
+			transition: all 0.2s ease-in;
+	  }
+
+	  #popup {
+	  	display: table-cell;
+	  	vertical-align: middle;
+	  }
+
+	  #popup-container {
+	  	max-width: 600px;
+	  	margin: 1rem;
+	  	background: #FFF;
+	  	box-shadow: 0px 0 14px 6px #6d6d6d;
+	  	border-radius: 3px;
+	  }
+
+	  #popup-header {
+	  	padding: 1rem;
+	  	text-align: center;
+	  	font-size: 1.2rem;
+	  	border-bottom: 1px solid #CCC;
+	  }
+
+	  #popup-body {
+	  	padding: 1rem;
+	  	text-align: justify;
+	  	font-size: 1rem;
+	  	color: #444;
+	  }
+
+	  #popup-bottom {
+	  	padding: 1rem;
+	  	text-align: right;
+	  	font-size: 1rem;
+	  }
+
+	  .green {
+	  	color: #4cff7e;
+	  }
+
+	  .warn {
+	  	color: #f7ff00;
+	  }
+
+	  #top-bar {
+	  	position: absolute;
+	  	top: 0;
+	  	left: 0;
+	  	right: 0;
+	  	text-align: center;
+	  	
+	  	background: rgba(0, 0, 0, 0.5);
+	  }
+
+	  #topbar > div {
+	  	display: inline-block;
+	  }
+
+	  /* CANTIDAD */
+	  #cantidad {
+	  	display: inline-block;
+	  	margin:;
+	  	font-size: 16px;
+	  	font-weight: 200;
+	  	z-index: 3;
+	  	color: #FFF;
+	  	padding: 8px;
+	  }
+
+	  #cantidad.hidden {
+	  	opacity: 0.0;
+	  }
+
+			/* BUTTON STYLING */
+		.button {			
+	    border: 0;
+	    padding: 5px;
+	    text-align: center;
+	    display: inline;
+	    cursor: pointer;
+	  	font-size: 1rem;
+	  	margin: 5px;
+	  	color: #FFF;
+	  	background: #2e9cd6;
+	  	border-radius: 2px;
+	  }
+	  .left {
+	  	float: left;
+	  }
+
+	  .right {
+	  	float: right;
+	  }
+
+	  ::-webkit-scrollbar {
+		  width: 0px;
+		  height: 0px;
+		}
+
+		/* Track */
+		::-webkit-scrollbar-track {
+		  background: #f1f1f1; 
+		}
+
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		  background: #888; 
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		  background: #555; 
+		}
+		</style>
+		<script languaje="javascript">
+			var __NUM_OF_MENU_ITEMS__ = 5;
+			var __MENU_ITEMS_PADDING__ = Math.floor( (__NUM_OF_MENU_ITEMS__ - 1 )/ 2);
+			var CURRENT_IMAGE_TRANSFORMATIONS = {
+				x: 0,
+				y: 0,
+				scale: 1,
+				originX: null,
+				originY: null,
+				deltaX: 0,
+				deltaY: 0
+			};
+
+			var current_adjust = {
+				paramName: "exposure",
+				max: 1,
+				min: -1,
+				callbacks: ""
+			};
+
+			function isMobile() {
+				return /mobile|android|iphone|ipad|ipod|kindle|symbian/i.test(navigator.userAgent||navigator.vendor||window.opera);
+			}
+
+			window.onerror = function(errorMessage, errorUrl, errorLine) {
+				alert("Error: " + errorMessage + " en la url: " + errorUrl + ", en la Línea:" + errorLine);
+			};
+
+			var touch_events = touch_events || {};
+
+			touch_events.adjusts = [];
+			touch_events.currentAdjust = null;
+
+			touch_events.startPoints = { x: null, y: null, time: 0 };
+			touch_events.endPoints = { x: null, y: null, time: 0 };
+			touch_events.touch = null;
+/*
+			touch_events.showOverlay = function() {
+				var overlay = document.getElementById("overlay");
+				overlay.style.display = "block";
+				setTimeout(function() {
+					//overlay.style.opacity = "0.5";
+				}, 0);
+			}
+
+			touch_events.closeAdjust = function() {
+				showAdjust(current_adjust);
+			}
+
+			touch_events.hideOverlay = function() {
+				var overlay = document.getElementById("overlay");
+				overlay.style.opacity = "0.0";
+			}
+
+			touch_events.closeOverlay = function() {
+				var overlay = document.getElementById("overlay");
+				touch_events.hideOverlay();
+				setTimeout(function() { overlay.style.display = "none"; }, 200);
+			}
+
+/*
+			touch_events.showVariables = function() {
+				var overlay = document.getElementById("overlay");
+				var j = touch_events.adjusts.length;
+				overlay.innerHTML = "";
+				var height = (document.body.offsetHeight - 80) / j; //  80 px for bottom menu
+				for (var i = 0; i < j; i++) {
+					overlay.innerHTML += '<div class="bloke" style="height: ' + height + 'px;">' + Locale.get(touch_events.adjusts[i]) + '</div>';
+				}
+				
+
+				touch_events.showOverlay();
+				//setTimeout(touch_events.hideOverlay, 1000);
+			}*/
+
+			touch_events.start = function(event) {
+
+				
+				if (!current_adjust) {
+					return;
+				}
+
+
+				// In order to calculate delta and speed
+				touch_events.startPoints.x = event.touches[0].pageX / document.body.offsetWidth;
+				touch_events.startPoints.y = event.touches[0].pageY / document.body.offsetHeight;
+				touch_events.startPoints.time = + new Date();
+
+				//touch_events.currentAdjust = touch_events.adjusts[parseInt(touch_events.adjusts.length * event.touches[0].pageY / (document.body.offsetHeight - 80))];
+
+			}
+
+			var DIRECTION = {
+				TOP: 0,
+				RIGHT: 1,
+				TOP: 2,
+				BOTTOM: 3
+			};
+
+			touch_events.move = function(event) {
+				//if (event.target.className.indexOf("bloke") < 0) { return; }
+
+				
+				touch_events.endPoints.x = event.touches[0].pageX / document.body.offsetWidth;
+				touch_events.endPoints.y = event.touches[0].pageY / document.body.offsetHeight;
+				touch_events.endPoints.time = + new Date();
+
+				var deltaT = touch_events.endPoints.time - touch_events.startPoints.time;
+				deltaT /= 1000;
+				var tx = touch_events.endPoints.x - touch_events.startPoints.x;
+				var ty = touch_events.endPoints.y - touch_events.startPoints.y;
+				var speedX = tx / deltaT;
+				var speedY = ty / deltaT;
+
+				// Get direction (TOP BOTTOM LEFT RIGHT)
+				var direction = Math.atan2(speedY, speedX);
+				var quadraticDirection = null;
+
+				if (Math.abs(direction) > 2.35) {
+					quadraticDirection = DIRECTION.LEFT;
+				} else if(Math.abs(direction) < 0.78) {
+					quadraticDirection = DIRECTION.RIGHT;
+				} else {
+					if (direction < 0) {
+						quadraticDirection = DIRECTION.TOP;
+					} else {
+						quadraticDirection = DIRECTION.BOTTOM;
+					}
+					
+				}
+
+				var top = event.touches[0].pageY;
+				var bottom = document.body.offsetHeight - top;
+				if ( event.touches.length == 1 &&
+					// Poder ajustar si la imagen no está escalada O si el target no es la propia imagen para poder variarlo cuando está escalado
+				     (CURRENT_IMAGE_TRANSFORMATIONS.scale === 1 || event.target !== imageElm ) &&
+
+				     bottom > 100 && top > 80) { // > 100 menu and submenu 
+
+					if (current_adjust) {
+						var pointVal = 1.25 * (event.touches[0].pageX / document.body.offsetWidth - 0.1);
+						if (pointVal < 0) { pointVal = 0; }
+						if (pointVal > 1) { pointVal = 1; }
+						var _min = current_adjust.min;
+						var _max = current_adjust.max;
+						pointVal = (_max - _min) * (pointVal) +  _min;
+
+						var amountElm = document.getElementById("cantidad");
+					  if (amountElm) {
+					    amountElm.innerHTML = Locale.get(current_adjust.paramName) + ": " + Math.round(pointVal * 100) / 100;
+					  }
+
+						// Set params
+						Actions.setParam({
+					    paramName: current_adjust.paramName,
+					    value: parseFloat(pointVal),
+					    callbacks: current_adjust.callbacks,
+					    save: true
+					  });
+					}
+				} else {
+
+					if (event.target == imageElm) {
+						if (event.touches.length == 1) { // Move image
+							console.log("Moviendo imagen")
+							var _tx = tx * document.body.offsetWidth;
+							var _ty = ty * document.body.offsetHeight;
+							CURRENT_IMAGE_TRANSFORMATIONS.x = CURRENT_IMAGE_TRANSFORMATIONS.deltaX + _tx;
+							CURRENT_IMAGE_TRANSFORMATIONS.y = CURRENT_IMAGE_TRANSFORMATIONS.deltaY + _ty;
+
+							// No move more than necesary at right
+							if (CURRENT_IMAGE_TRANSFORMATIONS.x > CURRENT_IMAGE_TRANSFORMATIONS.originX) {
+								CURRENT_IMAGE_TRANSFORMATIONS.x = CURRENT_IMAGE_TRANSFORMATIONS.originX;
+							}
+
+/* TODO
+							// No move more than necesary at left
+
+							if (CURRENT_IMAGE_TRANSFORMATIONS.x > CURRENT_IMAGE_TRANSFORMATIONS.originX) {
+								CURRENT_IMAGE_TRANSFORMATIONS.x = CURRENT_IMAGE_TRANSFORMATIONS.originX;
+							}
+
+							var t = CURRENT_IMAGE_TRANSFORMATIONS.originX - CURRENT_IMAGE_TRANSFORMATIONS.x;
+
+							console.log(imageElm.offsetWidth * CURRENT_IMAGE_TRANSFORMATIONS.scale / 2 - t);*/
+							// No move more than necesary at bottom
+							if (CURRENT_IMAGE_TRANSFORMATIONS.y > CURRENT_IMAGE_TRANSFORMATIONS.originY) {
+								CURRENT_IMAGE_TRANSFORMATIONS.y = CURRENT_IMAGE_TRANSFORMATIONS.originY;
+							}
+
+//							CURRENT_IMAGE_TRANSFORMATIONS.originX = touch_events.startPoints.x * document.body.offsetWidth - imageElm.offsetLeft;
+//							CURRENT_IMAGE_TRANSFORMATIONS.originY = touch_events.startPoints.y * document.body.offsetHeight - imageElm.offsetTop;
+							UI.updateImageTransformation();
+						}
+						if (event.touches.length == 2) { // zoom image
+							var dist_x = event.touches[0].pageX - event.touches[1].pageX;
+							
+							var scale = Math.abs(dist_x);
+							scale /= document.body.offsetWidth;
+							scale = 0.5 + scale * 2;
+							if (scale < 1) { scale = 1; }
+							scale = Math.round( scale * 100) / 100;
+							document.getElementById("cantidad").innerText = "Zoom: " + scale;
+							CURRENT_IMAGE_TRANSFORMATIONS.scale = scale;
+							UI.updateImageTransformation();
+							
+						}
+					}
+					
+				}
+
+				/*
+				//if (speedX < 100)
+
+				// Only when is one touch
+				if (event.touches.length == 1) {
+					if (current_adjust) {
+						var range = document.querySelector("[data=" + touch_events.currentAdjust + "]");
+						var pointVal = 1.25 * (event.touches[0].pageX / document.body.offsetWidth - 0.1);
+						if (pointVal < 0) { pointVal = 0; }
+						if (pointVal > 1) { pointVal = 1; }
+						var _min = parseFloat(range.getAttribute("min"));
+						var _max = parseFloat(range.getAttribute("max"));
+						pointVal = (_max - _min) * (pointVal) +  _min;
+						
+						range.value = pointVal;
+						range.dispatchEvent(new Event("input"));
+					}
+				}*/
+			}
+
+			touch_events.end = function(event) {
+				var deltaT = touch_events.endPoints.time - touch_events.startPoints.time;
+				deltaT /= 1000;
+				var speedX = (touch_events.endPoints.x - touch_events.startPoints.x) / deltaT;
+				var speedY = (touch_events.endPoints.y - touch_events.startPoints.y) / deltaT;
+				CURRENT_IMAGE_TRANSFORMATIONS.deltaX = CURRENT_IMAGE_TRANSFORMATIONS.x;
+				CURRENT_IMAGE_TRANSFORMATIONS.deltaY = CURRENT_IMAGE_TRANSFORMATIONS.y;
+				//event.preventDefault();				
+			}
+
+			touch_events.cancel = function(event) {
+				//event.preventDefault();				
+			}
+
+			touch_events.leave = function(event) {
+				//event.preventDefault();				
+			}
+
+			window.RAF = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
+			window.msRequestAnimationFrame || function(f) { setTimeout(f, 30);};
+
+			var UI = UI || {};
+			UI.scrollMenuListener = null;
+			UI.currentSelected = [];
+
+
+			UI.currentSubmenu = null;
+
+
+			UI.updateImageTransformation = function() {
+				imageElm.style.transformOrigin = " " + CURRENT_IMAGE_TRANSFORMATIONS.originX + "px " + CURRENT_IMAGE_TRANSFORMATIONS.originY + "px";
+				imageElm.style.transform = "translate(" + CURRENT_IMAGE_TRANSFORMATIONS.x + "px, " + CURRENT_IMAGE_TRANSFORMATIONS.y + "px) scale(" + CURRENT_IMAGE_TRANSFORMATIONS.scale + ")";
+			};
+
+			UI.closeSubmenu = function(menu) {
+				document.getElementById("submenu_" + menu).style.transform = "translateY(-100%)";
+				setTimeout(function() {
+					document.getElementById("submenu_" + menu).style.display = "none";
+				}, 200); // In order to perform transform before display: none
+				
+			};
+
+			UI.openSubmenu = function(menu) {
+				var subMenuElm = document.getElementById("submenu_" + menu);
+				var j = subMenuElm.children.length;
+				var i = 0;
+				var selectedElm = subMenuElm.children[0]; // select first from default
+				while (i < j) {
+					if (subMenuElm.children[i].className.indexOf("selected") > -1) {
+						selectedElm = subMenuElm.children[i];
+						break;
+					}
+					i++;
+				}
+
+				subMenuElm.style.display = "block";
+				
+				// When open menu, select the selected element on submenu
+				UI.selectAdjust(selectedElm);
+
+				setTimeout(function() {
+					subMenuElm.style.transform = "translateY(0%)";
+				}, 200); // In order to perform display: block before translateY
+				
+			}
+			UI.selectAdjust = function(that) {
+
+				if (that.getAttribute("data-submenu")) {
+					if (UI.currentSubmenu && UI.currentSubmenu !== that.getAttribute("data-submenu")) {
+						UI.closeSubmenu(UI.currentSubmenu);
+					}
+					// Show submenu
+					UI.currentSubmenu = that.getAttribute("data-submenu");
+					UI.openSubmenu(that.getAttribute("data-submenu"));
+					return;
+				}
+
+				// Close when menu changes, but prevent when in submenu
+				if (UI.currentSubmenu && that.parentElement.className.indexOf("submenu") < 0) {
+					UI.closeSubmenu(UI.currentSubmenu);
+				}
+
+				
+
+				if (that.getAttribute("data-item")) {
+    			current_adjust.paramName = that.getAttribute("data-item");
+    		}
+    		current_adjust.max = parseFloat(that.getAttribute("max"));
+    		current_adjust.min = parseFloat(that.getAttribute("min"));
+    		current_adjust.callbacks = that.getAttribute("data-callback") || "";
+
+    		var amountElm = document.getElementById("cantidad");
+			  if (amountElm) {
+			    amountElm.innerHTML = Locale.get(current_adjust.paramName) + ": " + Math.round(params[current_adjust.paramName] * 100) / 100;
+			  }
+
+			}
+
+			UI.dataActionClick = function(event) {
+				var that = event.target;
+				console.log(event.target);
+				if (that.getAttribute("data-action")) {
+    			window.Actions[that.getAttribute("data-action")]();
+    		}
+			} 
+
+			UI.selectMenuItem = function(index, menuElm) {
+				if (!menuElm) { // menuElm is menu for default
+					menuElm = document.getElementById("menu");
+				}
+
+				var that = menuElm.children[index];
+				var menuId = menuElm.getAttribute("id");
+
+				// Independiente del menu
+				if (!UI.currentSelected[menuId] ) {
+					UI.currentSelected[menuId] = __MENU_ITEMS_PADDING__; // Default
+				}
+
+				if (UI.currentSelected[menuElm.getAttribute("id")] !== index) {
+					menuElm.children[UI.currentSelected[menuId]].classList.remove("selected");
+					menuElm.children[index].classList.add("selected");
+					UI.currentSelected[menuElm.getAttribute("id")] = index;
+				}
+
+				var to = (index - __MENU_ITEMS_PADDING__) * document.body.offsetWidth / __NUM_OF_MENU_ITEMS__;
+				menuElm.scrollLeft = to;
+				UI.selectAdjust(menuElm.children[index]);
+
+			}
+
+			UI.scrollMenu = function(event) {
+
+				var menuElm = event.target;
+				if (event.target.className.indexOf("menu") < 0) {
+					return;
+				}
+				var selection = Math.round(__NUM_OF_MENU_ITEMS__ * this.scrollLeft / document.body.offsetWidth);
+				selection += __MENU_ITEMS_PADDING__;				
+
+				if (UI.scrollMenuListener) {
+					clearTimeout(UI.scrollMenuListener);
+				}
+
+				// Set the position
+				var that = this;
+				UI.scrollMenuListener = setTimeout(function() {
+					UI.selectMenuItem(selection, menuElm);
+				}, 150);
+	    }
+
+	    UI.clickMenuItem = function(event) {
+	    	if (this !== event.target.parentElement) { // Select only the parent of text
+	    		return;
+	    	}
+
+	    	var childElm = event.target.parentElement;
+	    	// Obtain the # of element
+	    	var menuElm = event.target.parentElement.parentElement;
+	    	if (menuElm.classList.contains("menu")) {
+	    		var j = menuElm.children.length;
+	    		var i = 0;
+	    		while (i < j) {
+	    			if (menuElm.children[++i] === childElm) {
+	    				console.log(i);
+	    				UI.selectMenuItem(i, menuElm);
+	    				break;
+	    			}
+	    		}
+	    		
+	    		
+	    	}
+	    }
+
+			window.addEventListener("load", function(event) {
+				// Check mobile
+		    /*if (!isMobile()) {
+		    	document.body.innerHTML = "Loading...";
+		    	document.body.style.background = "#000";
+		    	location.href="editor.html";
+		    	return;
+		    }*/
+
+
+
+		    var dataActionElm = document.getElementsByClassName("data-action");
+		    var i = dataActionElm.length;
+		    while (i --) {
+		    	dataActionElm[i].addEventListener("click", UI.dataActionClick);
+		    }
+		    
+		    
+		    
+		    var menus = document.getElementsByClassName("menu");
+		    var i = menus.length;
+		    while (i --) {
+		    	menus[i].addEventListener("scroll", UI.scrollMenu);
+		    }
+
+		    var items = document.getElementsByClassName("menu_item");
+		    i = items.length;
+		    while (i--) {
+		    	items[i].addEventListener("click", UI.clickMenuItem);	
+		    }
+
+		    // Image open action
+		    document.getElementById("image-open").addEventListener("click", function() {
+		    	console.log("CLIC")
+		  		document.getElementById("image_data").click(); 	
+		    });
+
+		    // Download image action
+		    document.getElementById("image-save").addEventListener("click", function() {
+		    	window.Actions.download();
+		    });
+      
+
+	      document.body.addEventListener("touchstart",  touch_events.start, false);
+			  document.body.addEventListener("touchend",    touch_events.end, false);
+			  document.body.addEventListener("touchcancel", touch_events.cancel, false);
+			  document.body.addEventListener("touchleave",  touch_events.leave, false);
+			  document.body.addEventListener("touchmove",   touch_events.move, false);
+
+			  //showAdjust(document.querySelector("[data-item=exposure]"));
+		    /*document.body.addEventListener("click", function(event) {
+		    	if (event.target.getAttribute("id") !== "canvas") {
+		    		return;
+		    	}
+		    	if (current_adjust !== null) {
+		    		showAdjust(current_adjust);
+		    		return;
+		    	}
+		    })*/
+		    __BOOT__();
+		  });
+
+
+		  var Popup = Popup || {};
+		  Popup.setHeader = function(header) {
+		  	document.getElementById("popup-header").innerText = header;
+		  }
+
+		  Popup.setBody = function(body) {
+		  	document.getElementById("popup-body").innerText = body;
+		  }
+
+		  Popup.clearBottom = function() {
+		  	document.getElementById("popup-bottom").innerHTML = "";
+		  }
+
+		  Popup.addButton = function(text, callback, type) {
+		  	document.getElementById("popup-bottom").innerHTML += `
+		  	<div id="${text}_${(+ new Date()).toString("32")}" class="button button-${type}">${text}</div>`;
+		  }
+
+		  Popup.visible = function(isVisible) {
+		  	if (isVisible) {
+		  		document.getElementById("overlay").style.display = "table";
+		  		setTimeout(function() {
+		  			document.getElementById("overlay").style.opacity = "1";
+		  		}, 200);
+		  	} else {
+		  		document.getElementById("overlay").style.opacity = "0";
+		  		setTimeout(function() {
+		  			document.getElementById("overlay").style.display = "none";	
+		  		}, 200);
+		  		
+		  	}
+		  }
+		  Popup.show = function(data) {
+		  	Popup.clearBottom();
+		  	Popup.setHeader(data.header || '');
+		  	Popup.setBody(data.body || '');
+		  	if (data.buttons) {
+		  		Object.keys(data.buttons).forEach(button => {
+		  			Popup.addButton(button.text, button.callback, button.type || 'default');
+		  		})
+		  	}
+		  	Popup.visible(true);
+		  }
+
+		  Popup.hide = function() { Popup.visible(false); }
+		</script>
+		<script languaje="javascript" src="editor.js"></script>
+	</head>
+	<body>
+		<div id="top-bar">
+			<div id="image-open" class="button left">Abrir</div>
+			<div id="cantidad">Exposición: 0.0</div>	
+			<div id="image-save" class="button right">Guardar</div>
+		</div>
+		
+		<div id="overlay">
+			<div id="popup">
+				<div id="popup-container">
+					<div id="popup-header">
+						HEADER
+					</div>
+					<div id="popup-body">
+						BODY
+					</div>
+					<div id="popup-bottom">
+					</div>
+				</div>
+			</div>
+		</div>
+
+<div id="submenu_details" class="menu submenu">
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+	<div class="menu_item selected" data-item="sharpen" min="-1" max="1" data-callback="kernel_update">
+		<div class="text">Nivel</div>
+	</div>
+
+	<div class="menu_item" data-item="sharpen_radius" min="0.1" max="2" data-callback="kernel_update">
+		<div class="text">Radio</div>
+	</div>
+
+	<div class="menu_item" data-item="masking" min="0" max="1">
+		<div class="text">Máscara</div>
+	</div>
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+</div>
+
+<div id="submenu_dehaze" class="menu submenu">
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+	<div class="menu_item selected" data-item="dehaze" min="1" max="-1">
+		<div class="text">Cantidad</div>
+	</div>
+
+	<div class="menu_item" data-item="atmosferic_light" min="0" max="1">
+		<div class="text">Luz</div>
+	</div>
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+	<div class="menu_item">
+		<div class="text"></div>
+	</div>
+</div>
+
+<div id="submenu_color" class="menu submenu">
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+		<div class="menu_item selected" data-item="temperature"  min="-1" max="1" data-callback="updateTemptint">
+			<div class="text">Temperatura</div>
+		</div>
+
+		<div class="menu_item" data-item="tint" min="-1" max="1" data-callback="updateTemptint">
+			<div class="text">Matíz</div>
+		</div>
+
+		<div class="menu_item" data-item="saturation"  min="-1" max="1">
+			<div class="text">Saturación</div>
+		</div>
+
+		<div class="menu_item" data-item="vibrance" min="-1" max="1">
+			<div class="text">Vibrancia</div>
+		</div>
+
+		<div class="menu_item" data-item="bAndW" min="-1" max="1">
+			<div class="text">B&W</div>
+		</div>
+
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+</div>
+
+
+<div id="submenu_tones" class="menu submenu">
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+		<div class="menu_item selected" data-item="whites"  min="-0.3" max="0.3" data-callback="generateLightning">
+			<div class="text">Blancos</div>
+		</div>
+
+		<div class="menu_item" data-item="highlights" min="-0.3" max="0.3" data-callback="generateLightning">
+			<div class="text">Luces</div>
+		</div>
+
+		<div class="menu_item" data-item="shadows" min="-0.3" max="0.3" data-callback="generateLightning">
+			<div class="text">Sombras</div>
+		</div>
+
+		<div class="menu_item" data-item="blacks" min="-0.3" max="0.3" data-callback="generateLightning">
+			<div class="text">Negros</div>
+		</div>
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+		<div class="menu_item">
+			<div class="text"></div>
+		</div>
+</div>
+
+		<div id="menu" class="menu">
+
+			<div class="menu_item" data-item="none">
+				<div class="text"></div>
+			</div>
+			<div class="menu_item">
+				<div class="text"></div>
+			</div>
+
+			<div class="menu_item selected" data-item="exposure" min="-1" max="1">
+				<div class="text">Exposición</div>
+			</div>
+
+			<div class="menu_item selected" data-item="brightness" min="-1" max="1">
+				<div class="text">Brillo</div>
+			</div>
+
+			<div class="menu_item" data-item="contrast"  min="-1" max="1" data-callback="generateLightning">
+				<div class="text">Contraste</div>
+			</div>
+
+			<div class="menu_item" data-submenu="color"  min="-1" max="1">
+				<div class="text">Color</div>
+			</div>
+
+
+			<div class="menu_item" data-submenu="tones" min="-1" max="1">
+				<div class="text">Tonos</div>
+			</div>
+
+			<div class="menu_item" data-item="radiance" min="-1" max="1" data-callback="generateLightning,kernel_update">
+				<div class="text">Radiancia</div>
+			</div>
+
+			<div class="menu_item" data-submenu="details">
+				<div class="text">Detalles</div>
+			</div>
+
+			<div class="menu_item" data-submenu="dehaze">
+				
+				<div class="text">Niebla</div>
+			</div>
+			
+			<div class="menu_item" data-item="hdr" min="-1" max="1" data-callback="kernel_update">
+				
+				<div class="text">HDR</div>
+			</div>
+
+			<div class="menu_item" >
+				<div class="text data-action warn" data-action="reset">Reiniciar</div>
+			</div>
+
+		<!--	<div class="menu_item">
+				<div class="text data-action green" data-action="download">Guardar</div>
+			</div>-->
+
+			<div class="menu_item">	
+				<div class="text"></div>
+			</div>
+			<div class="menu_item">
+				<div class="text"></div>
+			</div>
+			
+		</div>
+		<div id="canvas">
+			<canvas id="image_main" width="400" height="400"></canvas>
+			<canvas id="process_image" style="display: none" width="400" height="400"></canvas>
+		</div>
+		<input type="file" id="image_data" accept="image/*">
+	</body>
+</html>

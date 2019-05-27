@@ -1,0 +1,24 @@
+{
+  "short_name": "REXT",
+  "name": "REXT Image Editor",
+  "icons": [
+    {
+      "src": "icon-32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "icon-64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "icon-128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    }
+  ],
+  "background_color": "#444444",
+  "display": "standalone",
+  "start_url": "mobile.html"
+}

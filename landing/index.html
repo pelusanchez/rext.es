@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>REXT | Editor de imágenes en línea</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
+		<meta charset="utf-8">
+		<style type="text/css">
+		html {
+			font-size: 18px;
+			height: 100%;
+		}
+		body {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			
+			font-family: 'Roboto', sans-serif, Arial;
+			background: #0f1217;
+			background: url('bg.jpg');
+		  background-position: 50%;
+		  background-repeat: no-repeat;
+		  background-attachment: fixed;
+		}
+		#header {
+			padding: 2rem;
+			text-align: center;
+			line-height: 3rem;
+			min-height: 100px;
+			color: #FFF;
+			background: ;
+		}
+		#title {
+			font-size: 2rem;
+		}
+
+		#footer {
+			max-width: 800px;
+			margin: 1rem auto 0 auto;
+			background: #FFF;
+			color: #000;
+			padding: 2rem;
+			font-weight: 300;
+			text-align: center;
+		}
+
+		.content {
+			color: #FFF;
+			margin: 0 auto;
+			padding: 2rem;
+			max-width: 800px;
+			line-height: 2rem;
+			font-weight: 200;
+			background: #FFF;
+			color: #000;
+		}
+
+		.content > p {
+			color: #333;
+		}
+
+		.flex-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		#subtitle {
+			font-size: 1.5rem;
+			font-weight: 100;
+		}
+
+		#start-button {
+	    border: 0;
+	    outline: none;
+	    line-height: 1.8rem;
+	    font-size: 1.4rem;
+	    padding: 0.2rem 0.5rem;
+	    margin: 0;
+	    background: #23293d;
+	    color: #FFFFFF;
+	    border-radius: 2px;
+	    text-decoration: none;
+	    transition: all .2s ease-in;
+		}
+
+		#start-button:hover {
+			background-color: #1c2d65;
+		}
+
+		@media only screen and (min-width: 800px) {
+			.content {
+				margin-top: 5rem;
+			}
+		}
+
+		p {
+			margin: 0;
+		}
+
+		.warning {
+			font-weight: 300;
+    	color: #f18e22;
+		}
+
+		span.bold {
+			font-weight: 300;
+			color: #000;
+		}
+
+		ul {
+			margin: 0;
+			list-style-type: none;
+		}
+
+		ul li {
+			margin: 1rem 0;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="header">
+			<div id="title">REXT</div>
+			<div id="subtitle">
+				<p>Edita tus fotos en cualquier dispositivo, en cualquier lugar.</p>
+				<a href="/photo/build/desktop.html" id="start-button">Comenzar</a>
+			</div>
+		</div>
+
+		<div class="content">
+			<span class="warning">REXT se encuentra en una versión preeliminar, puede contener errores.</span>
+			<h2>Controles disponibles</h2>
+			<div class="flex-container">
+				<div class="item-control">
+					<h3>Funcionalidades básicas</h3>
+					<ul>
+						<li><span class="bold">Abrir:</span> para abrir una imagen, pulse el botón que se encuentra arriba a la izquierda.</li>
+						<li><span class="bold">Reiniciar:</span> para reiniciar los ajustes, pulse en el botón que se encuentra en el medio arriba a la izquierda.</li>
+						<li><span class="bold">Guardar:</span> para guardar una imagen, pulse en el botón que se encuentra en la derecha arriba a la izquierda.</li>
+						<li><span class="bold">Ampliar y alejar:</span> para ampliar o alejar una imagen, haga doble click sobre ella. Para moverse por ella, arrastre el ratón mientras mantiene pulsado el botón derecho.</li>
+					</ul>
+				</div>
+				<div class="item-control">
+					<h3>Tonos</h3>
+					<ul>
+						<li><span class="bold">Exposición:</span> afecta a los niveles de intensidad de todos los tonos.</li>
+						<li><span class="bold">Brillo:</span> afecta a los niveles de intensidad dejando los valores oscuros sin cambiar.</li>
+						<li><span class="bold">Contraste:</span> afecta a la diferencia entre valores cercanos de intensidad.</li>
+						<li><span class="bold">Claros:</span> afecta sólo a los valores más altos de intensidad.</li>
+						<li><span class="bold">Luces:</span> afecta sólo a los valores entre intermedios y claros de intensidad.</li>
+						<li><span class="bold">Sombras:</span> afecta sólo a los valores entre oscuros e intermedios de intensidad.</li>
+						<li><span class="bold">Oscuros:</span> afecta sólo a los valores oscuros de intensidad.</li>
+						<li><span class="bold">Radiancia:</span> efecto que varía el contraste local y el nivel de detalle.</li>
+						<li><span class="bold">HDR:</span> alto rango dinámico, sirve para visualizar toda la gama de colores que pueden perderse en una imagen con grandes diferencias de intensidades.</li>
+					</ul>
+				</div>
+
+				<div class="item-control">
+					<h3>Color</h3>
+					<ul>
+						<li><span class="bold">Temperatura y matíz:</span> corrigen el color ambiente en el momento de tomar la fotografía.</li>
+						<li><span class="bold">Saturación:</span> afecta a la cantidad de color de la imagen.</li>
+						<li><span class="bold">Vibrancia:</span> afecta a la cantidad de color de la imagen, variando más los valores de menor saturación.</li>
+						<li><span class="bold">Blanco y negro:</span> varía la imagen entre blanco y negro y real.</li>
+						<li><span class="bold">Colorear luces y sombras:</span> con esta herramienta puede darle color a las partes mas brillantes (luces) y a las partes más oscuras (sombras) de 
+						la imagen, variando su intensidad, color y saturación.</li>
+					</ul>
+				</div>
+
+				<div class="item-control">
+					<h3>Detalles</h3>
+					<ul>
+						<li><span class="bold">Nivel:</span> afecta al nivel de detalle deseado.</li>
+						<li><span class="bold">Radio:</span> afecta al radio de acción del detalle.</li>
+						<li><span class="bold">Máscara:</span> afecta a la cantidad de detalle.</li>
+						<li><span class="bold">Quitar niebla:</span> corrige los efectos producidos por la niebla.</li>
+						<li><span class="bold">Luz atmosférica:</span> selecciona el nivel de luz atmosférica deseado para corregir los efectos de la niebla.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			Desarrollado y diseñado con &#10084;	por David Iglesias.
+		</div>
+	</body>
+</html>
