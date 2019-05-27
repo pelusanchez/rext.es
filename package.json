@@ -12,7 +12,8 @@
     "gulp-sass": "^4.0.2",
     "gulp-string-replace": "^1.1.2",
     "gulp-webserver": "^0.9.1",
-    "npm": "^6.9.0"
+    "npm": "^6.9.0",
+    "tar": "^4.4.8"
   },
   "devDependencies": {},
   "scripts": {
