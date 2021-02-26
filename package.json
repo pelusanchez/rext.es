@@ -4,21 +4,24 @@
   "description": "",
   "main": "",
   "dependencies": {
-    "browser-sync": "^2.26.3",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-closure-compiler": "^0.4.0",
     "gulp-concat": "^2.6.1",
-    "gulp-csso": "^3.0.1",
+    "gulp-csso": "^4.0.1",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-sass": "^4.0.2",
+    "gulp-run": "^1.7.1",
+    "gulp-sass": "^4.1.0",
     "gulp-string-replace": "^1.1.2",
-    "gulp-webserver": "^0.9.1",
-    "npm": "^6.9.0",
-    "tar": "^4.4.8"
+    "gulp-uglifyjs": "^0.6.2",
+    "tar": "^6.1.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "tap test/*.js",
-    "dev": "gulp"
+    "dev": "gulp",
+    "build": "gulp"
   },
   "author": "David Iglesias",
   "license": "ISC"

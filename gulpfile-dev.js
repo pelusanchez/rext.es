@@ -7,10 +7,12 @@ const uglifyjs = require('gulp-uglifyjs');
 const htmlmin = require('gulp-htmlmin')
 const babel = require('gulp-babel');
 const cleanCSS = require('gulp-clean-css');
+var closureCompiler = require('gulp-closure-compiler');
 var fs = require('fs');
 
 var run = require('gulp-run');
 
+const browserSync = require('browser-sync').create();
 
 const buildPath = 'build/'
 const __PATH__ = 'src/'
@@ -39,6 +41,11 @@ const watchFiles = [
   __PATH__ + 'params.js',
   __PATH__ + 'serviceWorker-register.js'];
 
+
+function protectShaders(err, _data) {
+  return _data;
+}
+
 gulp.task('genShaders', function (done) {
   
   return new Promise((resolve, reject) => {
@@ -63,7 +70,7 @@ gulp.task('html', function (done) {
   return src(__PATH__ + '*.html')
     .pipe(htmlmin({ collapseWhitespace: true }))
     .pipe(dest(buildPath))
-
+    .pipe(browserSync.stream())
 });
 
 gulp.task('cssDesktop',  function (done) {
@@ -71,7 +78,7 @@ gulp.task('cssDesktop',  function (done) {
     .pipe(concat('desktop.style.css'))
     .pipe(cleanCSS())
     .pipe(dest(buildPath))
-
+    .pipe(browserSync.stream())
 });
 
 gulp.task('cssMobile',  function (done) {
@@ -79,7 +86,7 @@ gulp.task('cssMobile',  function (done) {
     .pipe(concat('mobile.style.css'))
     .pipe(cleanCSS())
     .pipe(dest(buildPath))
-
+    .pipe(browserSync.stream())
 });
 
 
@@ -87,49 +94,81 @@ gulp.task('jsDesktop', function (done) {
   return src([...globalJs, __PATH__ + 'desktop.js'], { sourcemaps: false })
     .pipe(concat('desktop.min.js'))
     .pipe(dest(buildPath, { sourcemaps: false }))
-
+    .pipe(browserSync.stream())
 });
 
 gulp.task('jsMobile', function (done) {
   return src([...globalJs, __PATH__ + 'mobile.js', __PATH__ + 'UI_mobile.js',], { sourcemaps: false })
     .pipe(concat('mobile.min.js'))
     .pipe(dest(buildPath, { sourcemaps: false }))
-
+    .pipe(browserSync.stream())
 });
 
 gulp.task('closureMobile', function(done) {
   return src(
     [buildPath + '/mobile.min.js',
      ])
+    .pipe(closureCompiler({
+      compilerPath: 'closure-compiler/compiler.jar',
+      fileName: 'mobile.build.js'
+    }))
     .pipe(dest(buildPath, { sourcemaps: false }))
-
+    .pipe(browserSync.stream())
 })
 
 gulp.task('closureDesktop', function(done) {
   return src(
     [buildPath + '/desktop.min.js',
      ])
+    .pipe(closureCompiler({
+      compilerPath: 'closure-compiler/compiler.jar',
+      fileName: 'desktop.build.js'
+    }))
     .pipe(dest(buildPath, { sourcemaps: false }))
-
+    .pipe(browserSync.stream())
 })
 
 gulp.task('image', function (done) {
   return src(__PATH__ + '*.jpg')
     .pipe(dest(buildPath))
-
+    .pipe(browserSync.stream())
 });
 
 gulp.task("json", function(done) {
   return src(__PATH__ + "*.json")
   .pipe(dest(buildPath))
+  .pipe(browserSync.stream())
 })
 
 gulp.task("serviceWorker", function(done) {
   return src(__PATH__ + "serviceWorker.js")
   .pipe(dest(buildPath))
+  .pipe(browserSync.stream())
 })
 
+gulp.task('browserSync', function() {
+  browserSync.init({
+    server: {
+      baseDir: buildPath
+    },
+  })
+})
+
+gulp.task('browserReload', function(done) {
+  browserSync.reload()
+  done();
+})
+
+
 var commonTasks = ['genShaders', `cssDesktop`, `cssMobile`, `jsDesktop`, `jsMobile`, 'html', 'image', 'json', 'closureDesktop', 'closureMobile', 'serviceWorker'];
+gulp.watch(
+  ['./src/*.css',
+   './src/*.html',
+   './src/fragment_shader.frag',
+   './src/vertex_shader.vert',
+   ...watchFiles], gulp.series([...commonTasks, 'browserReload']));
 
-
-gulp.task('default', gulp.series([...commonTasks]))
+gulp.task('default', 
+  gulp.series([...commonTasks, 'browserSync'], function (){
+  console.log('Building files');
+}))
