@@ -1,29 +1,44 @@
 {
-  "name": "photo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "",
+  "name": "rext.es",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-closure-compiler": "^0.4.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-csso": "^4.0.1",
-    "gulp-htmlmin": "^5.0.1",
-    "gulp-run": "^1.7.1",
-    "gulp-sass": "^4.1.0",
-    "gulp-string-replace": "^1.1.2",
-    "gulp-uglify": "^3.0.2",
-    "gulp-uglifyjs": "^0.6.2",
-    "tar": "^6.1.0"
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/react": "^17.0.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.3",
+    "rext-image-editor": "^1.1.1",
+    "web-vitals": "^1.0.1"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "tap test/*.js",
-    "dev": "gulp",
-    "build": "gulp"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "author": "David Iglesias",
-  "license": "ISC"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "node-sass": "^5.0.0",
+    "sass-loader": "^11.0.1"
+  }
 }
