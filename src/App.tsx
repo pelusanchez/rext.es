@@ -3,7 +3,7 @@ import './desktop.scss';
 import './style/normalize.css';
 import './style/scrollbar.scss'
 import Menu from './Menu'
-import { RextEditor } from 'rext-image-editor/dist'
+import { RextEditor } from 'rext-image-editor'
 import { Params } from 'rext-image-editor/dist/models/models';
 import { defaultParams } from './defauls'
 
