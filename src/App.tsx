@@ -6,6 +6,7 @@ import Menu from './Menu'
 import { RextEditor } from 'rext-image-editor'
 import { Params } from 'rext-image-editor/dist/models/models';
 import { defaultParams } from './defauls'
+import { CssBaseline, AppBar, Toolbar, IconButton, Typography, Badge, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Slider } from '@material-ui/core';
 
 const Rext : RextEditor = new RextEditor()
 
@@ -60,7 +61,6 @@ const App = React.memo(() => {
   const reset = () => {
     updateParams(defaultParams)
   }
-
   return (
     <div className="rext">
       <div className="rext-container">

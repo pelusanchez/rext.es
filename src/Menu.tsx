@@ -2,6 +2,7 @@ import React from 'react'
 import { Params } from 'rext-image-editor/dist/models/models'
 import './style/slider.scss'
 import MenuItems from './MenuItems.json'
+import { Slider } from '@material-ui/core'
 export interface MenuProps {
   params: Params;
   onChange(key: string, value: number) : void;
@@ -33,15 +34,14 @@ export const Menu = (props: MenuProps) => {
             return (
               <div className="menu_item">
                 <div className="text left">{item.name}</div>
-                <input 
-                  type="range" 
-                  className="range" 
-                  min={item.min} 
-                  max={item.max} 
-                  defaultValue={item.value} 
-                  value={props.params[item.id]} 
+
+                <Slider  
+                  min={item.min * 100} 
+                  max={item.max * 100} 
+                  defaultValue={item.value * 100} 
+                  value={props.params[item.id] * 100} 
                   step={item.step} 
-                  onChange={e => props.onChange(item.id, parseFloat(e.target.value)) }/>
+                  onChange={(e, v) => { props.onChange(item.id, (v as number) / 100) }} />
               </div>)
           })}
         </div>

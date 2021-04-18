@@ -6,74 +6,74 @@
     {
         "id": "exposure",
         "name": "exposure",
-        "min": "-0.8",
-        "max": "0.8",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.8,
+        "max": 0.8,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "brightness",
         "name": "brightness",
-        "min": "-0.9",
-        "max": "0.9",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.9,
+        "max": 0.9,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "contrast",
         "name": "contrast",
-        "min": "-0.8",
-        "max": "0.8",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.8,
+        "max": 0.8,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "whites",
         "name": "whites",
-        "min": "-0.3",
-        "max": "0.3",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.3,
+        "max": 0.3,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "highlights",
         "name": "highlights",
-        "min": "-0.3",
-        "max": "0.3",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.3,
+        "max": 0.3,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "shadows",
         "name": "shadows",
-        "min": "-0.3",
-        "max": "0.3",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.3,
+        "max": 0.3,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "blacks",
         "name": "blacks",
-        "min": "-0.3",
-        "max": "0.3",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.3,
+        "max": 0.3,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "radiance",
         "name": "radiance",
-        "min": "-1",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "hdr",
         "name": "hdr",
-        "min": "-1",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       }
     ]
   },
@@ -85,82 +85,82 @@
       {
         "id": "temperature",
         "name": "temperature",
-        "min": "-1",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "tint",
         "name": "tint",
-        "min": "-1",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "saturation",
         "name": "saturation",
-        "min": "-1",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "bAndW",
         "name": "bAndW",
-        "min": "-1",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "lightFill",
         "name": "lightFill",
-        "min": "0",
-        "max": "0.8",
-        "value": "0",
-        "step": "0.01"
+        "min": 0,
+        "max": 0.8,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "lightColor",
         "name": "lightColor",
-        "min": "0",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": 0,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "lightSat",
         "name": "lightSat",
-        "min": "0",
-        "max": "1",
-        "value": "1",
-        "step": "0.01"
+        "min": 0,
+        "max": 1,
+        "value": 1,
+        "step": 0.01
       },
       {
         "id": "darkFill",
         "name": "darkFill",
-        "min": "0",
-        "max": "0.8",
-        "value": "0",
-        "step": "0.01"
+        "min": 0,
+        "max": 0.8,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "darkColor",
         "name": "darkColor",
-        "min": "0",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": 0,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "darkSat",
         "name": "darkSat",
-        "min": "0",
-        "max": "1",
-        "value": "1",
-        "step": "0.01"
+        "min": 0,
+        "max": 1,
+        "value": 1,
+        "step": 0.01
       }]
   },
   {
@@ -170,42 +170,42 @@
       {
         "id": "sharpen",
         "name": "sharpen",
-        "min": "-1",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "sharpen_radius",
         "name": "sharpen_radius",
-        "min": "0.1",
-        "max": "2",
-        "value": "0",
-        "step": "0.01"
+        "min": 0.1,
+        "max": 2,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "masking",
         "name": "masking",
-        "min": "0",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": 0,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "dehaze",
         "name": "dehaze",
-        "min": "-0.9",
-        "max": "0.9",
-        "value": "0",
-        "step": "0.01"
+        "min": -0.9,
+        "max": 0.9,
+        "value": 0,
+        "step": 0.01
       },
       {
         "id": "atmosferic_light",
         "name": "atmosferic_light",
-        "min": "0",
-        "max": "1",
-        "value": "0",
-        "step": "0.01"
+        "min": 0,
+        "max": 1,
+        "value": 0,
+        "step": 0.01
       }
     ]
   }
