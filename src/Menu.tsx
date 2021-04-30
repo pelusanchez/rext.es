@@ -3,6 +3,8 @@ import { Params } from 'rext-image-editor/dist/models/models'
 import './style/slider.scss'
 import MenuItems from './MenuItems.json'
 import { Slider } from '@material-ui/core'
+import './Slider.scss'
+
 export interface MenuProps {
   params: Params;
   onChange(key: string, value: number) : void;
@@ -36,6 +38,7 @@ export const Menu = (props: MenuProps) => {
                 <div className="text left">{item.name}</div>
 
                 <Slider  
+                  className='slider'
                   min={item.min * 100} 
                   max={item.max * 100} 
                   defaultValue={item.value * 100} 

@@ -1,0 +1,14 @@
+.MuiSlider-root.slider {
+    color: #ffffff;
+    .MuiSlider-thumb {
+        &:hover {
+            box-shadow: 0px 0px 0px 8px rgba(255, 255, 255, 0.2);
+        }
+        &.Mui-focusVisible {
+            box-shadow: 0px 0px 0px 8px rgba(255, 255, 255, 0.2);
+        }
+        &.Mui-focusActive {
+            box-shadow: 0px 0px 0px 8px rgba(255, 255, 255, 0.2);
+        }
+    }
+}
