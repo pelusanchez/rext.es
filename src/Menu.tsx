@@ -4,6 +4,7 @@ import './style/slider.scss'
 import MenuItems from './MenuItems.json'
 import { Slider } from '@material-ui/core'
 import './Slider.scss'
+import { useTranslation } from 'react-i18next'
 
 export interface MenuProps {
   params: Params;
@@ -11,7 +12,8 @@ export interface MenuProps {
 }
 
 export const Menu = (props: MenuProps) => {
-  
+
+  const { t } = useTranslation('editor');
   const [ openedContainers, setOpenedContainers] = React.useState<{ [key: string]: boolean}> ({ "Tones": true });
 
   const switchContainer = (container: any) => {
@@ -29,13 +31,13 @@ export const Menu = (props: MenuProps) => {
         return (
         <div className={"menu-container " + ((openedContainers[container.title]) ? 'open': '') }>
           <div className="menu-container-title" onClick={e => switchContainer(container)}>
-            <div className="text">{container.title}</div>
+            <div className="text">{t(`editor:${container.title}`)}</div>
             <div className="expand-submenu-icon">+</div>
           </div>
           {container.items.map(item => {
             return (
               <div className="menu_item">
-                <div className="text left">{item.name}</div>
+                <div className="text left">{t(`editor:${item.name}`)}</div>
 
                 <Slider  
                   className='slider'
