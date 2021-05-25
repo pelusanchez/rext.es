@@ -5,9 +5,11 @@ import MenuItems from './MenuItems.json'
 import { Slider } from '@material-ui/core'
 import './Slider.scss'
 import { useTranslation } from 'react-i18next'
+import { dblClick, deltaSpeed } from './utils'
 
 export interface MenuProps {
   params: Params;
+  disabled?: boolean;
   onChange(key: string, value: number) : void;
 }
 
@@ -29,7 +31,7 @@ export const Menu = (props: MenuProps) => {
   return (<>
       {MenuItems.map(container => {
         return (
-        <div className={"menu-container " + ((openedContainers[container.title]) ? 'open': '') }>
+        <div className={`menu-container ${((openedContainers[container.title]) ? 'open': '')} ${(props.disabled) ? 'disabled': ''}` }>
           <div className="menu-container-title" onClick={e => switchContainer(container)}>
             <div className="text">{t(`editor:${container.title}`)}</div>
             <div className="expand-submenu-icon">+</div>
@@ -39,7 +41,16 @@ export const Menu = (props: MenuProps) => {
               <div className="menu_item">
                 <div className="text left">{t(`editor:${item.name}`)}</div>
 
-                <Slider  
+                <Slider
+                  onWheel={(e) => { 
+                    const delta = deltaSpeed(e.deltaY);
+                    const nextValue = props.params[item.id] + item.step * delta;
+                    if (nextValue <= item.min || nextValue >= item.max) {
+                      return;
+                    }
+                    props.onChange(item.id, nextValue);
+                  }}
+                  onClick={(e) => { dblClick(() => props.onChange(item.id, item.value)) }}
                   className='slider'
                   min={item.min * 100} 
                   max={item.max * 100} 

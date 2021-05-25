@@ -40,6 +40,11 @@ html, body {
 	font-size: 24px;
 }
 
+.disabled {
+	pointer-events: none;
+	opacity: 0.3;
+}
+
 #image_main {
 	cursor: pointer;
 	background-color: #000;

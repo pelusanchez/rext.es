@@ -85,7 +85,7 @@ const App = React.memo(() => {
             </div>
           </div>
 
-          <Menu onChange={onChange} params={params}></Menu>
+          <Menu onChange={onChange} params={params} disabled={!isLoaded}></Menu>
         </div>
         <div className="rext-canvas">
           <div id="canvas_info" style={{"color": "#FFFFFF" }} className={ (isLoaded) ? "hidden" : "" }>
