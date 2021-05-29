@@ -3,11 +3,11 @@ import './desktop.scss';
 import './style/normalize.css';
 import './style/scrollbar.scss'
 import Menu from './Menu'
-import { RextEditor } from 'rext-image-editor'
-import { Params } from 'rext-image-editor/dist/models/models';
+import { RextEditor } from './rext-dev/src/editor'
+import { Params } from './rext-dev/src/models/models';
 import { defaultParams } from './defauls'
 
-const Rext : RextEditor = new RextEditor()
+let rext: RextEditor;
 
 const App = React.memo(() => {
 
@@ -22,10 +22,10 @@ const App = React.memo(() => {
     const files : FileList = e.target.files
     const file = files[0]
     if (!isLoaded) {
-      Rext.setCanvas(canvasRef.current!)
+      rext = new RextEditor(canvasRef.current!);
       setIsLoaded(true)
     }
-    Rext.load(URL.createObjectURL(file))
+    rext.load(URL.createObjectURL(file))
   }
 
   const onChange = (key: string, value: number) => { 
@@ -38,20 +38,21 @@ const App = React.memo(() => {
       return;
     }
     setParams(nextParams)
-    Rext.updateParams(nextParams)
-    Rext.update();
+    rext.updateParams(nextParams)
+    rext.update();
   }
 
   const download = async () => {
     if (!isLoaded) {
       return;
     }
-    const blob = await Rext.blob()
+    const blob = await rext.blob()
     const url = URL.createObjectURL(blob);
     const dlLink = document.createElement("a");
     dlLink.href = url;
     dlLink.download = "image.jpg";
     document.body.append(dlLink);
+    debugger;
     dlLink.click();
     document.body.removeChild(dlLink);
     URL.revokeObjectURL(url);
