@@ -6,6 +6,7 @@
     {
         "id": "exposure",
         "name": "exposure",
+        "type": "scalar",
         "min": -0.8,
         "max": 0.8,
         "value": 0,
@@ -14,6 +15,7 @@
       {
         "id": "brightness",
         "name": "brightness",
+        "type": "scalar",
         "min": -0.9,
         "max": 0.9,
         "value": 0,
@@ -22,6 +24,7 @@
       {
         "id": "contrast",
         "name": "contrast",
+        "type": "scalar",
         "min": -0.8,
         "max": 0.8,
         "value": 0,
@@ -30,6 +33,7 @@
       {
         "id": "whites",
         "name": "whites",
+        "type": "scalar",
         "min": -0.3,
         "max": 0.3,
         "value": 0,
@@ -38,6 +42,7 @@
       {
         "id": "highlights",
         "name": "highlights",
+        "type": "scalar",
         "min": -0.3,
         "max": 0.3,
         "value": 0,
@@ -46,6 +51,7 @@
       {
         "id": "shadows",
         "name": "shadows",
+        "type": "scalar",
         "min": -0.3,
         "max": 0.3,
         "value": 0,
@@ -54,6 +60,7 @@
       {
         "id": "blacks",
         "name": "blacks",
+        "type": "scalar",
         "min": -0.3,
         "max": 0.3,
         "value": 0,
@@ -62,6 +69,7 @@
       {
         "id": "radiance",
         "name": "radiance",
+        "type": "scalar",
         "min": -1,
         "max": 1,
         "value": 0,
@@ -70,6 +78,7 @@
       {
         "id": "hdr",
         "name": "hdr",
+        "type": "scalar",
         "min": -1,
         "max": 1,
         "value": 0,
@@ -85,6 +94,7 @@
       {
         "id": "temperature",
         "name": "temperature",
+        "type": "scalar",
         "min": -1,
         "max": 1,
         "value": 0,
@@ -93,6 +103,7 @@
       {
         "id": "tint",
         "name": "tint",
+        "type": "scalar",
         "min": -1,
         "max": 1,
         "value": 0,
@@ -101,6 +112,7 @@
       {
         "id": "saturation",
         "name": "saturation",
+        "type": "scalar",
         "min": -1,
         "max": 1,
         "value": 0,
@@ -109,6 +121,7 @@
       {
         "id": "bAndW",
         "name": "bAndW",
+        "type": "scalar",
         "min": -1,
         "max": 1,
         "value": 0,
@@ -117,6 +130,7 @@
       {
         "id": "lightFill",
         "name": "lightFill",
+        "type": "scalar",
         "min": 0,
         "max": 0.8,
         "value": 0,
@@ -125,6 +139,7 @@
       {
         "id": "lightColor",
         "name": "lightColor",
+        "type": "scalar",
         "min": 0,
         "max": 1,
         "value": 0,
@@ -133,6 +148,7 @@
       {
         "id": "lightSat",
         "name": "lightSat",
+        "type": "scalar",
         "min": 0,
         "max": 1,
         "value": 1,
@@ -141,6 +157,7 @@
       {
         "id": "darkFill",
         "name": "darkFill",
+        "type": "scalar",
         "min": 0,
         "max": 0.8,
         "value": 0,
@@ -149,6 +166,7 @@
       {
         "id": "darkColor",
         "name": "darkColor",
+        "type": "scalar",
         "min": 0,
         "max": 1,
         "value": 0,
@@ -157,6 +175,7 @@
       {
         "id": "darkSat",
         "name": "darkSat",
+        "type": "scalar",
         "min": 0,
         "max": 1,
         "value": 1,
@@ -170,6 +189,7 @@
       {
         "id": "sharpen",
         "name": "sharpen",
+        "type": "scalar",
         "min": -1,
         "max": 1,
         "value": 0,
@@ -178,6 +198,7 @@
       {
         "id": "sharpen_radius",
         "name": "sharpen_radius",
+        "type": "scalar",
         "min": 0.1,
         "max": 2,
         "value": 0,
@@ -186,6 +207,7 @@
       {
         "id": "masking",
         "name": "masking",
+        "type": "scalar",
         "min": 0,
         "max": 1,
         "value": 0,
@@ -194,6 +216,7 @@
       {
         "id": "dehaze",
         "name": "dehaze",
+        "type": "scalar",
         "min": -0.9,
         "max": 0.9,
         "value": 0,
@@ -202,19 +225,21 @@
       {
         "id": "atmosferic_light",
         "name": "atmosferic_light",
+        "type": "scalar",
         "min": 0,
         "max": 1,
         "value": 0,
         "step": 0.01
       },
       {
-          "id": "rotation",
-          "name": "rotation",
-          "min": -3.14,
-          "max": 3.14,
-          "value": 0,
-          "step": 0.01
-        }
+        "id": "rotation",
+        "name": "rotation",
+        "type": "scalar",
+        "min": -3.14,
+        "max": 3.14,
+        "value": 0,
+        "step": 0.01
+      }
     ]
   }
 ]

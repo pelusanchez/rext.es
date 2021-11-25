@@ -3,9 +3,9 @@ import './desktop.scss';
 import './style/normalize.css';
 import './style/scrollbar.scss'
 import Menu from './Menu'
-import { RextEditor } from './rext-dev/src/editor'
-import { Params } from './rext-dev/src/models/models';
+import { RextEditor } from 'rext-image-editor';
 import { defaultParams } from './defauls'
+import { Params } from 'rext-image-editor/dist/models/models';
 
 let rext: RextEditor;
 
@@ -37,9 +37,8 @@ const App = React.memo(() => {
     if (!isLoaded) {
       return;
     }
-    setParams(nextParams)
-    rext.updateParams(nextParams)
-    rext.update();
+    setParams(nextParams);
+    rext.updateParams(nextParams);
   }
 
   const download = async () => {

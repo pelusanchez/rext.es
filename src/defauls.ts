@@ -1,4 +1,4 @@
-import { Params } from './rext-dev/src/models/models';
+import { Params } from "rext-image-editor/dist/models/models";
 
 export const defaultParams : Params = {
   hdr: 0,
@@ -25,6 +25,22 @@ export const defaultParams : Params = {
   darkFill: 0,
   darkColor: 0,
   darkSat: 1,
-
   rotation: 0,
+  rotation_center: {
+    x: 0,
+    y: 0,
+  },
+  scale: {
+    x: 1,
+    y: 1,
+  },
+  translate: {
+    x: 0,
+    y: 0,
+  },
+  size: {
+    x: 1,
+    y: 1,
+  },
+  zoom: 1,
 };

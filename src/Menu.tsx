@@ -37,6 +37,8 @@ export const Menu = (props: MenuProps) => {
             <div className="expand-submenu-icon">+</div>
           </div>
           {container.items.map(item => {
+            // @ts-ignore
+            const value = (item.type === "scalar") ? props.params[item.id] as number : (props.params[item.id] as any)[item.dimension];
             return (
               <div className="menu_item">
                 <div className="text left">{t(`editor:${item.name}`)}</div>
@@ -44,7 +46,7 @@ export const Menu = (props: MenuProps) => {
                 <Slider
                   onWheel={(e) => { 
                     const delta = deltaSpeed(e.deltaY);
-                    const nextValue = props.params[item.id] + item.step * delta;
+                    const nextValue = value + item.step * delta;
                     if (nextValue <= item.min || nextValue >= item.max) {
                       return;
                     }
@@ -55,7 +57,7 @@ export const Menu = (props: MenuProps) => {
                   min={item.min * 100} 
                   max={item.max * 100} 
                   defaultValue={item.value * 100} 
-                  value={props.params[item.id] * 100} 
+                  value={value * 100} 
                   step={item.step} 
                   onChange={(e, v) => { props.onChange(item.id, (v as number) / 100) }} />
               </div>)
