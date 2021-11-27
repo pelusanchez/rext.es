@@ -1,5 +1,5 @@
 import React from 'react'
-import { Params } from 'rext-image-editor/dist/models/models'
+import { Params, vec2 } from 'rext-image-editor/dist/models/models'
 import './style/slider.scss'
 import MenuItems from './MenuItems.json'
 import { Slider } from '@material-ui/core'
@@ -28,6 +28,22 @@ export const Menu = (props: MenuProps) => {
     setOpenedContainers(updatedContainer)
   }
 
+  const computeValue = (item: any) => {
+    if (item.type === "scalar") {
+      return props.params[item.id] as number;
+    }
+    
+    if (item.type === "vec2") {
+      const value = (props.params[item.id] as vec2).x as number;
+      return {
+        x: value,
+        y: value,
+      }
+    }
+    
+    return (props.params[item.id] as any)[item.dimension];
+  }
+
   return (<>
       {MenuItems.map(container => {
         return (
@@ -38,7 +54,7 @@ export const Menu = (props: MenuProps) => {
           </div>
           {container.items.map(item => {
             // @ts-ignore
-            const value = (item.type === "scalar") ? props.params[item.id] as number : (props.params[item.id] as any)[item.dimension];
+            const value = computeValue(item)
             return (
               <div className="menu_item">
                 <div className="text left">{t(`editor:${item.name}`)}</div>

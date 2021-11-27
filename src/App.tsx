@@ -1,13 +1,14 @@
 import React from 'react'
-import './desktop.scss';
-import './style/normalize.css';
-import './style/scrollbar.scss'
-import Menu from './Menu'
+import Menu from './Menu';
 import { RextEditor } from 'rext-image-editor';
-import { defaultParams } from './defauls'
+import { defaultParams } from './defauls';
 import { Params } from 'rext-image-editor/dist/models/models';
 
-let rext: RextEditor;
+import './desktop.scss';
+import './style/normalize.css';
+import './style/scrollbar.scss';
+  
+const rext: RextEditor = new RextEditor();
 
 const App = React.memo(() => {
 
@@ -22,10 +23,12 @@ const App = React.memo(() => {
     const files : FileList = e.target.files
     const file = files[0]
     if (!isLoaded) {
-      rext = new RextEditor(canvasRef.current!);
+      rext.setCanvas(canvasRef.current!);
+      rext.onParamsChange(setParams);
       setIsLoaded(true)
     }
     rext.load(URL.createObjectURL(file))
+      .then(() => rext.autoZoom());
   }
 
   const onChange = (key: string, value: number) => { 
@@ -37,6 +40,15 @@ const App = React.memo(() => {
     if (!isLoaded) {
       return;
     }
+    const scale = {
+      x: 1.5,
+      y: 1.5,
+    }
+    const translate = {
+      x: -0.25,
+      y: -0.25,
+    }
+    nextParams = { ...nextParams, scale, translate };
     setParams(nextParams);
     rext.updateParams(nextParams);
   }
@@ -51,7 +63,6 @@ const App = React.memo(() => {
     dlLink.href = url;
     dlLink.download = "image.jpg";
     document.body.append(dlLink);
-    debugger;
     dlLink.click();
     document.body.removeChild(dlLink);
     URL.revokeObjectURL(url);
@@ -91,7 +102,9 @@ const App = React.memo(() => {
           <div id="canvas_info" style={{"color": "#FFFFFF" }} className={ (isLoaded) ? "hidden" : "" }>
             Para comenzar, abra una imagen
           </div>
-          <canvas id="image_main" ref={canvasRef} className={ (!isLoaded) ? 'hidden' : "" } width="400" height="400"></canvas>
+          <canvas id="image_main" ref={canvasRef} className={ (!isLoaded) ? 'hidden' : "" } 
+            width={window.innerWidth - 400} 
+            height={window.innerHeight - 100} ></canvas>
         </div>
         <input type="file" id="image_data" accept="image/*" ref={inputRef} onChange={loadImage}></input>
       </div>
